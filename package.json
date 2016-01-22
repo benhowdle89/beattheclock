@@ -1,0 +1,31 @@
+{
+  "name": "tetrisjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "watchify assets/index.jsx -t babelify --outfile dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benhowdle89/tetrisjs.git"
+  },
+  "keywords": [],
+  "author": "Ben Howdle <hello@benhowdle.im> (http://benhowdle.im/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benhowdle89/tetrisjs/issues"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "6.1.18",
+    "babel-preset-react": "6.1.18",
+    "babel-preset-stage-0": "6.3.13",
+    "babelify": "7.2.0",
+    "randomstring": "^1.1.3",
+    "react": "0.14.3",
+    "react-dom": "0.14.3",
+    "watchify": "3.6.1"
+  },
+  "homepage": "https://github.com/benhowdle89/tetrisjs#readme"
+}
