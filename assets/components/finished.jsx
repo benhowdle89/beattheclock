@@ -16,7 +16,7 @@ const Finished = ({ onRetry, score, total }) => {
             <p className="face centered">{face}</p>
             <hr />
             <button onClick={onRetry}>Retry</button>
-            <TwitterButton message={`I got to ${score} on Beat the Clock`} url={window.location.href}>
+            <TwitterButton message={`I got ${score} on Beat the Clock`} url={window.location.href}>
                 Share
             </TwitterButton>
         </div>

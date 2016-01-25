@@ -273,7 +273,7 @@ var Finished = function Finished(_ref) {
         ),
         _react2.default.createElement(
             _reactSocial.TwitterButton,
-            { message: 'I got to ' + score + ' on Beat the Clock', url: window.location.href },
+            { message: 'I got ' + score + ' on Beat the Clock', url: window.location.href },
             'Share'
         )
     );
@@ -507,7 +507,12 @@ var Start = function Start(_ref) {
         _react2.default.createElement(
             "h1",
             null,
-            "Beat the Clock"
+            "Beat the Clock ",
+            _react2.default.createElement(
+                "span",
+                { className: "meta" },
+                "...with JavaScript knowledge"
+            )
         ),
         _react2.default.createElement("hr", null),
         _react2.default.createElement(
@@ -611,16 +616,15 @@ var _randomstring2 = _interopRequireDefault(_randomstring);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var data = ['[1, 4, 6, 5, 7].length', 'null == undefined', '["neo", "morpheus", "trinity", null, "ghost"][2]', '"abc".split("")[0]', 'Object.keys({foo: "bar", bar: "foo"})[1]', '/321/.test("123")', 'Math.round(0.3 + 0.4)', '["foo", "bar", "baz"].reverse().join().slice(0, 3)', '[null, false, undefined].filter(Boolean)'];
+var data = ['[1, 4, 6, 5, 7].length', 'null == undefined', '["neo", "morpheus", "trinity", null, "ghost"][2]', '"abc".split("")[0]', 'Object.keys({foo: "bar", bar: "foo"})[1]', '/321/.test("123")', 'Math.round(0.3 + 0.4)', '["foo", "bar", "baz"].reverse().join().slice(0, 3)', '[null, false, undefined].filter(Boolean)', 'Number("2") - 1 == 1', '(true + false) < 2 - true', 'new Array(2).toString().slice(-1)'];
 
 var questions = exports.questions = data.map(function (d) {
     var answer = eval(d);
-    if (Boolean(answer)) {
-        if (Array.isArray(answer) && !answer.length) {
-            answer = "[]";
-        } else {
-            answer = answer.toString();
-        }
+    if (Array.isArray(answer) && !answer.length) {
+        answer = "[]";
+    }
+    if (typeof answer == 'boolean') {
+        answer = answer.toString();
     }
     return {
         text: d,

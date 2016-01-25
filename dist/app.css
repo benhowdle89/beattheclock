@@ -113,12 +113,22 @@ button {
     white-space: nowrap; }
 
 .app-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
-  flex-direction: column; }
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
 
 main {
-  flex: 1;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   max-width: 952px;
   min-width: 640px;
   margin: auto;
@@ -126,6 +136,9 @@ main {
   position: relative; }
 
 footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   padding: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1); }
@@ -133,6 +146,9 @@ footer {
     margin-right: 6px; }
 
 .stats {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex; }
 
 .score-value {
@@ -147,8 +163,13 @@ footer {
 .canvas {
   margin-bottom: 24px;
   overflow: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap; }
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
 
 .time {
   font-weight: 700;
@@ -174,8 +195,10 @@ h1 {
   margin-bottom: 48px; }
 
 .face {
-  transform: rotate(90deg);
-  transform-origin: center;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  -webkit-transform-origin: center;
+          transform-origin: center;
   font-size: 48px;
   margin: 48px auto 24px auto;
   position: relative;

@@ -9,17 +9,19 @@ let data = [
     '/321/.test("123")',
     'Math.round(0.3 + 0.4)',
     '["foo", "bar", "baz"].reverse().join().slice(0, 3)',
-    '[null, false, undefined].filter(Boolean)'
+    '[null, false, undefined].filter(Boolean)',
+    'Number("2") - 1 == 1',
+    '(true + false) < 2 - true',
+    'new Array(2).toString().slice(-1)'
 ]
 
 export const questions = data.map(d => {
     let answer = eval(d)
-    if(Boolean(answer)){
-        if(Array.isArray(answer) && !answer.length){
-            answer = "[]"
-        } else {
-            answer = answer.toString()
-        }
+    if(Array.isArray(answer) && !answer.length){
+        answer = "[]"
+    }
+    if(typeof answer == 'boolean'){
+        answer = answer.toString()
     }
     return {
         text: d,

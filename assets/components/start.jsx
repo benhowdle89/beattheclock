@@ -3,7 +3,7 @@ import React from 'react'
 const Start = ({ onStart }) => {
     return (
         <div className="start">
-            <h1>Beat the Clock</h1>
+            <h1>Beat the Clock <span className="meta">...with JavaScript knowledge</span></h1>
             <hr />
             <p>The rules:</p>
             <ul className="rules">
