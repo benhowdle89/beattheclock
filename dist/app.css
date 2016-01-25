@@ -10,7 +10,7 @@ body {
   height: 100%; }
 
 body {
-  font-family: "lato", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
   background: #191919;
   color: #edeff5;
@@ -58,6 +58,14 @@ blockquote {
   font-style: italic;
   font-size: 16px; }
 
+input[type="text"] {
+  padding: 6px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(111, 124, 130, 0.6);
+  font: inherit; }
+  .question-input input[type="text"] {
+    width: 100%; }
+
 .centered {
   margin: auto;
   text-align: center; }
@@ -89,20 +97,74 @@ blockquote {
   cursor: pointer; }
   .button:hover, button:hover {
     opacity: 0.9; }
+  .button:focus, button:focus {
+    outline: none; }
+  .question .button, .question button {
+    font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New; }
 
 .app-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
-  flex-direction: column; }
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
 
 main {
-  flex: 1;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   max-width: 952px;
+  min-width: 640px;
   margin: auto;
-  padding: 0 24px;
+  padding: 48px 24px;
   position: relative; }
 
 footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   padding: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+.stats {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.score-value {
+  font-size: 36px;
+  font-weight: 700; }
+
+.timer {
+  margin-left: auto; }
+
+.canvas {
+  height: 300px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.time {
+  font-weight: 700;
+  font-size: 32px; }
+
+.time-bad {
+  color: red; }
+
+.time-good {
+  color: green; }
+
+.time-warning {
+  color: orange; }
+
+.question.selected .button {
+  border: 1px solid #fff; }

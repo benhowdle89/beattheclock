@@ -29,9 +29,9 @@ var _timer = require('./timer.jsx');
 
 var _timer2 = _interopRequireDefault(_timer);
 
-var _streak = require('./streak.jsx');
+var _score = require('./score.jsx');
 
-var _streak2 = _interopRequireDefault(_streak);
+var _score2 = _interopRequireDefault(_score);
 
 var _start = require('./start.jsx');
 
@@ -52,7 +52,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var remainingTimer = null;
-var STARTING_TIME = 5000;
+var STARTING_TIME = 1000000;
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -87,7 +87,7 @@ var App = function (_Component) {
         };
 
         _this.selectQuestion = function (id) {
-            return _this.setState({
+            _this.setState({
                 questions: _this.state.questions.map(function (q) {
                     return _extends({}, q, {
                         selected: q.id == id
@@ -102,11 +102,15 @@ var App = function (_Component) {
                 return !!q.selected;
             });
             if (selected && selected.answer == answer) {
+                var score = ++_this.state.score;
+                if (score == _this.state.total) {
+                    return _this.finish();
+                }
                 var index = questions.indexOf(selected);
                 questions.splice(index, 1);
                 return _this.setState({
                     questions: questions,
-                    streak: ++_this.state.streak,
+                    score: score,
                     remaining: _this.state.remaining + 5000
                 });
             }
@@ -114,7 +118,7 @@ var App = function (_Component) {
 
         _this.state = {
             questions: _questions.questions,
-            streak: 0,
+            score: 0,
             total: _questions.total,
             remaining: STARTING_TIME,
             finished: false,
@@ -139,12 +143,16 @@ var App = function (_Component) {
                 _layout2.default,
                 null,
                 !this.state.started && _react2.default.createElement(_start2.default, { onStart: this.start }),
-                this.state.finished && _react2.default.createElement(_finished2.default, { onRetry: this.reset, streak: this.state.streak }),
+                this.state.finished && _react2.default.createElement(_finished2.default, { onRetry: this.reset, score: this.state.score }),
                 this.state.started && !this.state.finished && _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(_streak2.default, this.state),
-                    _react2.default.createElement(_timer2.default, this.state),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'stats' },
+                        _react2.default.createElement(_score2.default, this.state),
+                        _react2.default.createElement(_timer2.default, this.state)
+                    ),
                     _react2.default.createElement(_canvas2.default, { questions: this.state.questions, selectQuestion: this.selectQuestion }),
                     _react2.default.createElement(_input2.default, { answerQuestion: this.answerQuestion, selected: this.state.questions.some(function (q) {
                             return q.selected;
@@ -159,7 +167,7 @@ var App = function (_Component) {
 
 exports.default = App;
 
-},{"./../config/questions":10,"./canvas.jsx":2,"./finished.jsx":3,"./input.jsx":4,"./layout.jsx":5,"./start.jsx":7,"./streak.jsx":8,"./timer.jsx":9,"react":282}],2:[function(require,module,exports){
+},{"./../config/questions":10,"./canvas.jsx":2,"./finished.jsx":3,"./input.jsx":4,"./layout.jsx":5,"./score.jsx":7,"./start.jsx":8,"./timer.jsx":9,"react":282}],2:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -200,7 +208,7 @@ var Canvas = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'canvas' },
                 this.props.questions.map(function (q) {
                     return _react2.default.createElement(_question2.default, { selectQuestion: _this2.props.selectQuestion, key: q.id, question: q });
                 })
@@ -230,7 +238,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Finished = function Finished(_ref) {
     var onRetry = _ref.onRetry;
-    var streak = _ref.streak;
+    var score = _ref.score;
 
     return _react2.default.createElement(
         'div',
@@ -239,7 +247,7 @@ var Finished = function Finished(_ref) {
             'p',
             null,
             'You got ',
-            streak
+            score
         ),
         _react2.default.createElement(
             'button',
@@ -268,6 +276,10 @@ Object.defineProperty(exports, "__esModule", {
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -302,21 +314,15 @@ var Input = function (_Component) {
     _createClass(Input, [{
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            if (nextProps.selected) {
-                this._input.focus();
-            }
+            _reactDom2.default.findDOMNode(this.refs.input).focus();
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement('input', { ref: function ref(c) {
-                        return _this2._input = c;
-                    }, type: 'text', placeholder: 'Answer here...', onKeyUp: this.handleKeyUp })
+                { className: 'question-input' },
+                _react2.default.createElement('input', { ref: 'input', type: 'text', placeholder: 'Answer here...', onKeyUp: this.handleKeyUp })
             );
         }
     }]);
@@ -326,7 +332,7 @@ var Input = function (_Component) {
 
 exports.default = Input;
 
-},{"react":282}],5:[function(require,module,exports){
+},{"react":282,"react-dom":152}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -405,12 +411,11 @@ var Question = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'question ' + (this.props.question.selected && 'selected') },
                 _react2.default.createElement(
-                    'p',
-                    { onClick: this.handleSelect },
-                    this.props.question.text,
-                    this.props.question.selected && 'SELECTED'
+                    'span',
+                    { className: 'button', onClick: this.handleSelect },
+                    this.props.question.text
                 )
             );
         }
@@ -422,13 +427,48 @@ var Question = function (_Component) {
 exports.default = Question;
 
 },{"react":282}],7:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = require('react');
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Score = function Score(_ref) {
+    var score = _ref.score;
+    var total = _ref.total;
+
+    return _react2.default.createElement(
+        "div",
+        { className: "score" },
+        _react2.default.createElement(
+            "p",
+            null,
+            "Score: ",
+            _react2.default.createElement(
+                "span",
+                { className: "score-value" },
+                score
+            )
+        )
+    );
+};
+
+exports.default = Score;
+
+},{"react":282}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -438,40 +478,51 @@ var Start = function Start(_ref) {
     var onStart = _ref.onStart;
 
     return _react2.default.createElement(
-        'button',
-        { onClick: onStart },
-        'Start!'
+        "div",
+        { className: "start" },
+        _react2.default.createElement(
+            "h1",
+            null,
+            "Beat the Clock"
+        ),
+        _react2.default.createElement(
+            "p",
+            null,
+            "The rules:"
+        ),
+        _react2.default.createElement(
+            "ul",
+            { className: "rules" },
+            _react2.default.createElement(
+                "li",
+                null,
+                "The clock will start at 20s and run down to zero"
+            ),
+            _react2.default.createElement(
+                "li",
+                null,
+                "Every correct answer will add 5s back to your remaining time"
+            ),
+            _react2.default.createElement(
+                "li",
+                null,
+                "Simply select a question to begin answering it"
+            ),
+            _react2.default.createElement(
+                "li",
+                null,
+                "The aim is to answer as many as possible in the time remaining"
+            )
+        ),
+        _react2.default.createElement(
+            "button",
+            { onClick: onStart },
+            "Start!"
+        )
     );
 };
 
 exports.default = Start;
-
-},{"react":282}],8:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Streak = function Streak(_ref) {
-    var streak = _ref.streak;
-    var total = _ref.total;
-    return _react2.default.createElement(
-        'p',
-        null,
-        streak,
-        '/',
-        total
-    );
-};
-
-exports.default = Streak;
 
 },{"react":282}],9:[function(require,module,exports){
 'use strict';
@@ -494,12 +545,22 @@ var Timer = function Timer(_ref) {
     var remaining = _ref.remaining;
 
     var d = _moment2.default.duration(remaining, 'milliseconds'),
-        seconds = d.asSeconds();
+        seconds = d.asSeconds(),
+        timeColor = 'good';
+    if (seconds < 5) {
+        timeColor = 'bad';
+    } else if (seconds < 15) {
+        timeColor = 'warning';
+    }
     return _react2.default.createElement(
-        'p',
-        null,
-        seconds,
-        's'
+        'div',
+        { className: 'timer' },
+        _react2.default.createElement(
+            'p',
+            { className: 'time time-' + timeColor },
+            seconds,
+            's'
+        )
     );
 };
 
@@ -2998,21 +3059,34 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
     return Math.ceil(this.bitLength() / 8);
   };
 
+  BN.prototype.toTwos = function toTwos (width) {
+    if (this.negative !== 0) {
+      return this.abs().inotn(width).iaddn(1);
+    }
+    return this.clone();
+  };
+
+  BN.prototype.fromTwos = function fromTwos (width) {
+    if (this.testn(width - 1)) {
+      return this.notn(width).iaddn(1).ineg();
+    }
+    return this.clone();
+  };
+
   BN.prototype.isNeg = function isNeg () {
     return this.negative !== 0;
   };
 
   // Return negative clone of `this`
   BN.prototype.neg = function neg () {
-    if (this.isZero()) return this.clone();
-
-    var r = this.clone();
-    r.negative = this.negative ^ 1;
-    return r;
+    return this.clone().ineg();
   };
 
   BN.prototype.ineg = function ineg () {
-    this.negative ^= 1;
+    if (!this.isZero()) {
+      this.negative ^= 1;
+    }
+
     return this;
   };
 
@@ -4673,8 +4747,8 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
       if (mode !== 'div') {
         mod = res.mod.neg();
-        if (positive && mod.neg) {
-          mod = mod.add(num);
+        if (positive && mod.negative !== 0) {
+          mod.iadd(num);
         }
       }
 
@@ -4699,8 +4773,8 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
       if (mode !== 'div') {
         mod = res.mod.neg();
-        if (positive && mod.neg) {
-          mod = mod.isub(num);
+        if (positive && mod.negative !== 0) {
+          mod.isub(num);
         }
       }
 
@@ -5103,6 +5177,46 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
       break;
     }
     return res;
+  };
+
+  BN.prototype.gtn = function gtn (num) {
+    return this.cmpn(num) === 1;
+  };
+
+  BN.prototype.gt = function gt (num) {
+    return this.cmp(num) === 1;
+  };
+
+  BN.prototype.gten = function gten (num) {
+    return this.cmpn(num) >= 0;
+  };
+
+  BN.prototype.gte = function gte (num) {
+    return this.cmp(num) >= 0;
+  };
+
+  BN.prototype.ltn = function ltn (num) {
+    return this.cmpn(num) === -1;
+  };
+
+  BN.prototype.lt = function lt (num) {
+    return this.cmp(num) === -1;
+  };
+
+  BN.prototype.lten = function lten (num) {
+    return this.cmpn(num) <= 0;
+  };
+
+  BN.prototype.lte = function lte (num) {
+    return this.cmp(num) <= 0;
+  };
+
+  BN.prototype.eqn = function eqn (num) {
+    return this.cmpn(num) === 0;
+  };
+
+  BN.prototype.eq = function eq (num) {
+    return this.cmp(num) === 0;
   };
 
   //
@@ -11257,7 +11371,11 @@ EdwardsCurve.prototype.pointFromX = function pointFromX(x, odd) {
   var rhs = this.c2.redSub(this.a.redMul(x2));
   var lhs = this.one.redSub(this.c2.redMul(this.d).redMul(x2));
 
-  var y = rhs.redMul(lhs.redInvm()).redSqrt();
+  var y2 = rhs.redMul(lhs.redInvm());
+  var y = y2.redSqrt();
+  if (y.redSqr().redSub(y2).cmp(this.zero) !== 0)
+    throw new Error('invalid point');
+
   var isOdd = y.fromRed().isOdd();
   if (odd && !isOdd || !odd && isOdd)
     y = y.redNeg();
@@ -11988,6 +12106,8 @@ ShortCurve.prototype.pointFromX = function pointFromX(x, odd) {
 
   var y2 = x.redSqr().redMul(x).redIAdd(x.redMul(this.a)).redIAdd(this.b);
   var y = y2.redSqrt();
+  if (y.redSqr().redSub(y2).cmp(this.zero) !== 0)
+    throw new Error('invalid point');
 
   // XXX Is there any way to tell if the number is odd without converting it
   // to non-red form?
@@ -13017,7 +13137,9 @@ EC.prototype.sign = function sign(msg, key, enc, options) {
   var drbg = new elliptic.hmacDRBG({
     hash: this.hash,
     entropy: bkey,
-    nonce: nonce
+    nonce: nonce,
+    pers: options.pers,
+    persEnc: options.persEnc
   });
 
   // Number of bytes to generate
@@ -13118,7 +13240,12 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
     return signature.recoveryParam;
 
   for (var i = 0; i < 4; i++) {
-    var Qprime = this.recoverPubKey(e, signature, i);
+    var Qprime;
+    try {
+      Qprime = this.recoverPubKey(e, signature, i);
+    } catch (e) {
+      continue;
+    }
 
     if (Qprime.eq(Q))
       return i;
@@ -13254,7 +13381,7 @@ function Signature(options, enc) {
   assert(options.r && options.s, 'Signature without r or s');
   this.r = new BN(options.r, 16);
   this.s = new BN(options.s, 16);
-  if (options.recoveryParam !== null)
+  if (options.recoveryParam)
     this.recoveryParam = options.recoveryParam;
   else
     this.recoveryParam = null;
@@ -14736,15 +14863,15 @@ module.exports={
   "_args": [
     [
       "elliptic@^6.0.0",
-      "/Users/benhowdle/Dropbox/htdocs/tetrisjs/node_modules/browserify-sign"
+      "/Users/benhowdle/Dropbox/htdocs/beattheclock/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
-  "_id": "elliptic@6.1.0",
+  "_id": "elliptic@6.2.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/elliptic",
-  "_nodeVersion": "5.2.0",
+  "_nodeVersion": "5.4.1",
   "_npmUser": {
     "email": "fedor@indutny.com",
     "name": "indutny"
@@ -14763,11 +14890,11 @@ module.exports={
     "/browserify-sign",
     "/create-ecdh"
   ],
-  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.1.0.tgz",
-  "_shasum": "68130e03823b4ce024955ad1be195e148099d654",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.2.1.tgz",
+  "_shasum": "72ade423d4144e967446cc2bfbed4d088d154e71",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/Users/benhowdle/Dropbox/htdocs/tetrisjs/node_modules/browserify-sign",
+  "_where": "/Users/benhowdle/Dropbox/htdocs/beattheclock/node_modules/browserify-sign",
   "author": {
     "email": "fedor@indutny.com",
     "name": "Fedor Indutny"
@@ -14793,13 +14920,13 @@ module.exports={
   },
   "directories": {},
   "dist": {
-    "shasum": "68130e03823b4ce024955ad1be195e148099d654",
-    "tarball": "http://registry.npmjs.org/elliptic/-/elliptic-6.1.0.tgz"
+    "shasum": "72ade423d4144e967446cc2bfbed4d088d154e71",
+    "tarball": "http://registry.npmjs.org/elliptic/-/elliptic-6.2.1.tgz"
   },
   "files": [
     "lib"
   ],
-  "gitHead": "b465fea90447f3b6c0b3f55e5fd6ecdedc1282f2",
+  "gitHead": "a706516830ff575b540953dda154a1f83d010314",
   "homepage": "https://github.com/indutny/elliptic",
   "keywords": [
     "Cryptography",
@@ -14826,7 +14953,7 @@ module.exports={
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "test": "make lint && istanbul test _mocha --reporter=spec test/*-test.js"
   },
-  "version": "6.1.0"
+  "version": "6.2.1"
 }
 
 },{}],92:[function(require,module,exports){

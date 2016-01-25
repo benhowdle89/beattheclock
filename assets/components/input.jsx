@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 
 class Input extends Component {
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.selected){
-            this._input.focus()
-        }
+        ReactDOM.findDOMNode(this.refs.input).focus()
     }
 
     handleKeyUp = (event) => {
@@ -17,8 +16,8 @@ class Input extends Component {
 
     render () {
         return (
-            <div>
-                <input ref={(c) => this._input = c} type="text" placeholder="Answer here..." onKeyUp={this.handleKeyUp} />
+            <div className="question-input">
+                <input ref="input" type="text" placeholder="Answer here..." onKeyUp={this.handleKeyUp} />
             </div>
         )
     }

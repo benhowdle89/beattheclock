@@ -4,13 +4,13 @@ import Layout from './layout.jsx'
 import Canvas from './canvas.jsx'
 import Input from './input.jsx'
 import Timer from './timer.jsx'
-import Streak from './streak.jsx'
+import Score from './score.jsx'
 import Start from './start.jsx'
 import Finished from './finished.jsx'
 import { questions, total } from './../config/questions'
 
 let remainingTimer = null
-const STARTING_TIME = 5000
+const STARTING_TIME = 1000000
 
 class App extends Component {
 
@@ -18,7 +18,7 @@ class App extends Component {
         super(props)
         this.state = {
             questions,
-            streak: 0,
+            score: 0,
             total,
             remaining: STARTING_TIME,
             finished: false,
@@ -58,7 +58,7 @@ class App extends Component {
     }
 
     selectQuestion = (id) => {
-        return this.setState({
+        this.setState({
             questions: this.state.questions.map(q => {
                 return {
                     ...q,
@@ -72,11 +72,15 @@ class App extends Component {
         let questions = this.state.questions
         let selected = questions.find(q => !!q.selected)
         if(selected && selected.answer == answer){
+            let score = ++this.state.score
+            if(score == this.state.total){
+                return this.finish()
+            }
             let index = questions.indexOf(selected)
             questions.splice(index, 1)
             return this.setState({
                 questions,
-                streak: ++this.state.streak,
+                score,
                 remaining: this.state.remaining + 5000
             })
         }
@@ -91,13 +95,15 @@ class App extends Component {
                 )}
 
                 {(this.state.finished) && (
-                    <Finished onRetry={this.reset} streak={this.state.streak} />
+                    <Finished onRetry={this.reset} score={this.state.score} />
                 )}
 
                 {(this.state.started && !this.state.finished) && (
                     <div>
-                        <Streak {...this.state} />
-                        <Timer {...this.state} />
+                        <div className="stats">
+                            <Score {...this.state} />
+                            <Timer {...this.state} />
+                        </div>
                         <Canvas questions={this.state.questions} selectQuestion={this.selectQuestion} />
                         <Input answerQuestion={this.answerQuestion} selected={this.state.questions.some(q => q.selected)} />
                     </div>

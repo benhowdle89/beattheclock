@@ -8,8 +8,8 @@ class Question extends Component {
 
     render () {
         return (
-            <div>
-                <p onClick={this.handleSelect}>{this.props.question.text}{(this.props.question.selected && 'SELECTED')}</p>
+            <div className={`question ${(this.props.question.selected && 'selected')}`}>
+                <span className="button" onClick={this.handleSelect}>{this.props.question.text}</span>
             </div>
         )
     }
