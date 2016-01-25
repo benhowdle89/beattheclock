@@ -58,6 +58,9 @@ blockquote {
   font-style: italic;
   font-size: 16px; }
 
+ul {
+  margin: 24px 0 24px 48px; }
+
 input[type="text"] {
   padding: 6px 12px;
   border-radius: 3px;
@@ -65,6 +68,8 @@ input[type="text"] {
   font: inherit; }
   .question-input input[type="text"] {
     width: 100%; }
+  input[type="text"]:focus {
+    outline: none; }
 
 .centered {
   margin: auto;
@@ -84,22 +89,26 @@ input[type="text"] {
   font-size: 16px;
   font-style: italic; }
 
-.button, button {
+.button,
+button {
   display: inline-block;
   margin: 24px 6px 0 0;
-  background: #16222A;
+  background: transparent;
   padding: 6px 12px;
-  border-radius: 3px;
-  border: 1px solid rgba(111, 124, 130, 0.6);
+  border-radius: 1px;
+  border: 1px solid #fff;
   color: #fff;
   font-size: 16px;
   font-weight: 300;
   cursor: pointer; }
-  .button:hover, button:hover {
+  .button:hover,
+  button:hover {
     opacity: 0.9; }
-  .button:focus, button:focus {
+  .button:focus,
+  button:focus {
     outline: none; }
-  .question .button, .question button {
+  .question .button, .question
+  button {
     font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New; }
 
 .app-container {
@@ -132,6 +141,8 @@ footer {
   display: flex;
   padding: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1); }
+  footer span {
+    margin-right: 6px; }
 
 .stats {
   display: -webkit-box;
@@ -167,4 +178,11 @@ footer {
   color: orange; }
 
 .question.selected .button {
-  border: 1px solid #fff; }
+  color: #000;
+  background: #fff; }
+
+h1 {
+  font-family: "HelveticaNeueHeavy", "HelveticaNeue-Heavy", "Helvetica Neue Heavy", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosBold', "Arial Black", sans-serif;
+  font-weight: 700;
+  font-stretch: normal;
+  margin-bottom: 48px; }

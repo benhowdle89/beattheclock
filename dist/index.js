@@ -322,7 +322,7 @@ var Input = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'question-input' },
-                _react2.default.createElement('input', { ref: 'input', type: 'text', placeholder: 'Answer here...', onKeyUp: this.handleKeyUp })
+                _react2.default.createElement('input', { disabled: !this.props.selected, ref: 'input', type: 'text', placeholder: 'Answer here...', onKeyUp: this.handleKeyUp })
             );
         }
     }]);
@@ -359,7 +359,12 @@ var Layout = function Layout(_ref) {
         _react2.default.createElement(
             "footer",
             null,
-            "Made by Ben Howdle"
+            "Made by ",
+            _react2.default.createElement(
+                "a",
+                { href: "http://twitter.com" },
+                "Ben Howdle"
+            )
         )
     );
 };
@@ -511,7 +516,7 @@ var Start = function Start(_ref) {
             _react2.default.createElement(
                 "li",
                 null,
-                "The aim is to answer as many as possible in the time remaining"
+                "The aim is to answer as many as possible in the time remaining!"
             )
         ),
         _react2.default.createElement(

@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
                 { children }
             </main>
             <footer>
-                Made by Ben Howdle
+                Made by <a href="http://twitter.com">Ben Howdle</a>
             </footer>
         </div>
     )

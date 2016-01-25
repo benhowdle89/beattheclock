@@ -17,7 +17,7 @@ class Input extends Component {
     render () {
         return (
             <div className="question-input">
-                <input ref="input" type="text" placeholder="Answer here..." onKeyUp={this.handleKeyUp} />
+                <input disabled={!this.props.selected} ref="input" type="text" placeholder="Answer here..." onKeyUp={this.handleKeyUp} />
             </div>
         )
     }
