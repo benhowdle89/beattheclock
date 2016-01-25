@@ -379,7 +379,7 @@ var Layout = function Layout(_ref) {
             "Made by ",
             _react2.default.createElement(
                 "a",
-                { href: "http://twitter.com" },
+                { href: "http://twitter.com/benhowdle" },
                 "Ben Howdle"
             )
         )
