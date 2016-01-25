@@ -52,7 +52,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var remainingTimer = null;
-var STARTING_TIME = 1000;
+var STARTING_TIME = 20000;
+
+var DEFAULT_STATE = {
+    questions: _questions.questions,
+    score: 0,
+    total: _questions.total,
+    remaining: STARTING_TIME,
+    finished: false,
+    started: false
+};
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -79,11 +88,7 @@ var App = function (_Component) {
         };
 
         _this.reset = function () {
-            return _this.setState({
-                finished: false,
-                started: false,
-                remaining: STARTING_TIME
-            });
+            return _this.setState(DEFAULT_STATE);
         };
 
         _this.selectQuestion = function (id) {
@@ -116,14 +121,7 @@ var App = function (_Component) {
             }
         };
 
-        _this.state = {
-            questions: _questions.questions,
-            score: 0,
-            total: _questions.total,
-            remaining: STARTING_TIME,
-            finished: false,
-            started: false
-        };
+        _this.state = DEFAULT_STATE;
         return _this;
     }
 

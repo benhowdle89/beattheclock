@@ -10,20 +10,22 @@ import Finished from './finished.jsx'
 import { questions, total } from './../config/questions'
 
 let remainingTimer = null
-const STARTING_TIME = 1000
+const STARTING_TIME = 20000
+
+const DEFAULT_STATE = {
+    questions,
+    score: 0,
+    total,
+    remaining: STARTING_TIME,
+    finished: false,
+    started: false
+}
 
 class App extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            questions,
-            score: 0,
-            total,
-            remaining: STARTING_TIME,
-            finished: false,
-            started: false
-        }
+        this.state = DEFAULT_STATE
     }
 
     start = () => {
@@ -43,11 +45,7 @@ class App extends Component {
     };
 
     reset = () => {
-        return this.setState({
-            finished: false,
-            started: false,
-            remaining: STARTING_TIME
-        })
+        return this.setState(DEFAULT_STATE)
     };
 
     finish() {
