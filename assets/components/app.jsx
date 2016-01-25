@@ -10,7 +10,7 @@ import Finished from './finished.jsx'
 import { questions, total } from './../config/questions'
 
 let remainingTimer = null
-const STARTING_TIME = 1000000
+const STARTING_TIME = 1000
 
 class App extends Component {
 
@@ -95,7 +95,7 @@ class App extends Component {
                 )}
 
                 {(this.state.finished) && (
-                    <Finished onRetry={this.reset} score={this.state.score} />
+                    <Finished onRetry={this.reset} score={this.state.score} total={this.state.total} />
                 )}
 
                 {(this.state.started && !this.state.finished) && (
@@ -104,6 +104,7 @@ class App extends Component {
                             <Score {...this.state} />
                             <Timer {...this.state} />
                         </div>
+                        <hr />
                         <Canvas questions={this.state.questions} selectQuestion={this.selectQuestion} />
                         <Input answerQuestion={this.answerQuestion} selected={this.state.questions.some(q => q.selected)} />
                     </div>

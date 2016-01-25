@@ -52,7 +52,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var remainingTimer = null;
-var STARTING_TIME = 1000000;
+var STARTING_TIME = 1000;
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -143,7 +143,7 @@ var App = function (_Component) {
                 _layout2.default,
                 null,
                 !this.state.started && _react2.default.createElement(_start2.default, { onStart: this.start }),
-                this.state.finished && _react2.default.createElement(_finished2.default, { onRetry: this.reset, score: this.state.score }),
+                this.state.finished && _react2.default.createElement(_finished2.default, { onRetry: this.reset, score: this.state.score, total: this.state.total }),
                 this.state.started && !this.state.finished && _react2.default.createElement(
                     'div',
                     null,
@@ -153,6 +153,7 @@ var App = function (_Component) {
                         _react2.default.createElement(_score2.default, this.state),
                         _react2.default.createElement(_timer2.default, this.state)
                     ),
+                    _react2.default.createElement('hr', null),
                     _react2.default.createElement(_canvas2.default, { questions: this.state.questions, selectQuestion: this.selectQuestion }),
                     _react2.default.createElement(_input2.default, { answerQuestion: this.answerQuestion, selected: this.state.questions.some(function (q) {
                             return q.selected;
@@ -239,24 +240,42 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Finished = function Finished(_ref) {
     var onRetry = _ref.onRetry;
     var score = _ref.score;
+    var total = _ref.total;
 
+    var face = ':)',
+        perc = score / total * 100;
+    if (perc <= 40) {
+        face = ':(';
+    } else if (perc <= 75) {
+        face = ':|';
+    }
     return _react2.default.createElement(
         'div',
-        null,
+        { className: 'finished' },
         _react2.default.createElement(
             'p',
-            null,
-            'You got ',
+            { className: 'centered' },
+            'You got:'
+        ),
+        _react2.default.createElement(
+            'p',
+            { className: 'score-value centered' },
             score
         ),
         _react2.default.createElement(
+            'p',
+            { className: 'face centered' },
+            face
+        ),
+        _react2.default.createElement('hr', null),
+        _react2.default.createElement(
             'button',
             { onClick: onRetry },
-            'Retry!'
+            'Retry'
         ),
         _react2.default.createElement(
             _reactSocial.TwitterButton,
-            { message: 'I got 3 on quiz', url: window.location.href },
+            { message: 'I got to ' + score + ' on Beat the Clock', url: window.location.href },
             'Share'
         )
     );
@@ -490,6 +509,7 @@ var Start = function Start(_ref) {
             null,
             "Beat the Clock"
         ),
+        _react2.default.createElement("hr", null),
         _react2.default.createElement(
             "p",
             null,
@@ -519,6 +539,7 @@ var Start = function Start(_ref) {
                 "The aim is to answer as many as possible in the time remaining!"
             )
         ),
+        _react2.default.createElement("hr", null),
         _react2.default.createElement(
             "button",
             { onClick: onStart },
@@ -552,9 +573,9 @@ var Timer = function Timer(_ref) {
     var d = _moment2.default.duration(remaining, 'milliseconds'),
         seconds = d.asSeconds(),
         timeColor = 'good';
-    if (seconds < 5) {
+    if (seconds <= 5) {
         timeColor = 'bad';
-    } else if (seconds < 15) {
+    } else if (seconds <= 15) {
         timeColor = 'warning';
     }
     return _react2.default.createElement(

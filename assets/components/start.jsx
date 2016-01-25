@@ -4,6 +4,7 @@ const Start = ({ onStart }) => {
     return (
         <div className="start">
             <h1>Beat the Clock</h1>
+            <hr />
             <p>The rules:</p>
             <ul className="rules">
                 <li>The clock will start at 20s and run down to zero</li>
@@ -11,6 +12,7 @@ const Start = ({ onStart }) => {
                 <li>Simply select a question to begin answering it</li>
                 <li>The aim is to answer as many as possible in the time remaining!</li>
             </ul>
+            <hr />
             <button onClick={onStart}>Start!</button>
         </div>
     )

@@ -5,9 +5,9 @@ const Timer = ({ remaining }) => {
     let d = moment.duration(remaining, 'milliseconds'),
         seconds = d.asSeconds(),
         timeColor = 'good';
-    if(seconds < 5) {
+    if(seconds <= 5) {
         timeColor = 'bad'
-    } else if (seconds < 15){
+    } else if (seconds <= 15){
         timeColor = 'warning'
     }
     return (

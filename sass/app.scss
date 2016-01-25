@@ -144,6 +144,9 @@ footer {
 .score-value {
     font-size: 36px;
     font-weight: 700;
+    .finished & {
+        margin-top: 24px;
+    }
 }
 .timer {
     margin-left: auto;
@@ -178,4 +181,13 @@ h1 {
     font-weight: 700;
     font-stretch: normal;
     margin-bottom: 48px;
+}
+
+.face {
+    transform: rotate(90deg);
+    transform-origin: center;
+    font-size: 48px;
+    margin: 48px auto 24px auto;
+    position: relative;
+    left: 3px;
 }
