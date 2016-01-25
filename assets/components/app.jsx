@@ -1,35 +1,69 @@
 import React, {Component} from 'react'
-import RandomString from 'randomstring'
 
+import Layout from './layout.jsx'
 import Canvas from './canvas.jsx'
 import Input from './input.jsx'
+import Timer from './timer.jsx'
+import Streak from './streak.jsx'
+import Start from './start.jsx'
+import Finished from './finished.jsx'
+import { questions, total } from './../config/questions'
+
+let remainingTimer = null
+const STARTING_TIME = 5000
 
 class App extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            questions: [
-                {
-                    id: RandomString.generate(6),
-                    text: '2 + 2',
-                    answer: '4',
-                    selected: false
-                }, {
-                    id: RandomString.generate(6),
-                    text: '1 / 1',
-                    answer: '1',
-                    selected: false
-                }
-            ]
+            questions,
+            streak: 0,
+            total,
+            remaining: STARTING_TIME,
+            finished: false,
+            started: false
         }
+    }
+
+    start = () => {
+        return this.setState({
+            started: true
+        }, () => {
+            remainingTimer = setInterval(() => {
+                let remaining = this.state.remaining - 1000
+                if(remaining == 0){
+                    this.finish()
+                }
+                return this.setState({
+                    remaining
+                })
+            }, 1000)
+        })
+    };
+
+    reset = () => {
+        return this.setState({
+            finished: false,
+            started: false,
+            remaining: STARTING_TIME
+        })
+    };
+
+    finish() {
+        clearInterval(remainingTimer)
+        return this.setState({
+            finished: true
+        })
     }
 
     selectQuestion = (id) => {
         return this.setState({
             questions: this.state.questions.map(q => {
-                q.selected = q.id == id
-                return q
+                return {
+                    ...q,
+                    selected: q.id == id
+                }
             })
         })
     };
@@ -41,17 +75,34 @@ class App extends Component {
             let index = questions.indexOf(selected)
             questions.splice(index, 1)
             return this.setState({
-                questions
+                questions,
+                streak: ++this.state.streak,
+                remaining: this.state.remaining + 5000
             })
         }
     };
 
     render() {
+
         return (
-            <div>
-                <Canvas questions={this.state.questions} selectQuestion={this.selectQuestion} />
-                <Input answerQuestion={this.answerQuestion} />
-            </div>
+            <Layout>
+                {(!this.state.started) && (
+                    <Start onStart={this.start} />
+                )}
+
+                {(this.state.finished) && (
+                    <Finished onRetry={this.reset} streak={this.state.streak} />
+                )}
+
+                {(this.state.started && !this.state.finished) && (
+                    <div>
+                        <Streak {...this.state} />
+                        <Timer {...this.state} />
+                        <Canvas questions={this.state.questions} selectQuestion={this.selectQuestion} />
+                        <Input answerQuestion={this.answerQuestion} selected={this.state.questions.some(q => q.selected)} />
+                    </div>
+                )}
+            </Layout>
         )
     }
 }
