@@ -51,7 +51,7 @@ h3 {
 }
 hr {
     height: 1px;
-    margin: 48px 0;
+    margin: 24px 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 blockquote {
@@ -114,6 +114,7 @@ button {
     }
     .question & {
         font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+        white-space: nowrap;
     }
 }
 .app-container {
@@ -152,8 +153,10 @@ footer {
     margin-left: auto;
 }
 .canvas {
-    height: 300px;
+    margin-bottom: 24px;
+    overflow: auto;
     display: flex;
+    flex-wrap: wrap;
 }
 .time {
     font-weight: 700;

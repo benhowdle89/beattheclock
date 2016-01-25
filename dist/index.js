@@ -476,7 +476,9 @@ var Score = function Score(_ref) {
                 "span",
                 { className: "score-value" },
                 score
-            )
+            ),
+            " / ",
+            total
         )
     );
 };
@@ -530,6 +532,11 @@ var Start = function Start(_ref) {
                 "li",
                 null,
                 "Simply select a question to begin answering it"
+            ),
+            _react2.default.createElement(
+                "li",
+                null,
+                "Your answer should be the output of the expression if it was ran in the console"
             ),
             _react2.default.createElement(
                 "li",
@@ -593,8 +600,6 @@ exports.default = Timer;
 },{"moment":134,"react":282}],10:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -606,22 +611,23 @@ var _randomstring2 = _interopRequireDefault(_randomstring);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var data = [{
-    text: '2 + 2',
-    answer: '4'
-}, {
-    text: '1 / 1',
-    answer: '1'
-}, {
-    text: 'null === undefined',
-    answer: 'false'
-}];
+var data = ['[1, 4, 6, 5, 7].length', 'null == undefined', '["neo", "morpheus", "trinity", null, "ghost"][2]', '"abc".split("")[0]', 'Object.keys({foo: "bar", bar: "foo"})[1]', '/321/.test("123")', 'Math.round(0.3 + 0.4)', '["foo", "bar", "baz"].reverse().join().slice(0, 3)', '[null, false, undefined].filter(Boolean)'];
 
 var questions = exports.questions = data.map(function (d) {
-    return _extends({}, d, {
+    var answer = eval(d);
+    if (Boolean(answer)) {
+        if (Array.isArray(answer) && !answer.length) {
+            answer = "[]";
+        } else {
+            answer = answer.toString();
+        }
+    }
+    return {
+        text: d,
         selected: false,
-        id: _randomstring2.default.generate(6)
-    });
+        id: _randomstring2.default.generate(6),
+        answer: answer
+    };
 });
 
 var total = exports.total = questions.length;
