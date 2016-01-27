@@ -80,6 +80,8 @@ class App extends Component {
                 questions,
                 score,
                 remaining: this.state.remaining + 5000
+            }, () => {
+                this.selectQuestion((questions[index] || questions[0]).id)
             })
         }
     };
