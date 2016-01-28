@@ -12,7 +12,8 @@ let data = [
     '[null, false, undefined].filter(Boolean)',
     'Number("2") - 1 == 1',
     '(true + false) < 2 - true',
-    'new Array(2).toString().slice(-1)'
+    'new Array(2).toString().slice(-1)',
+    'typeof new String("What Am I?")'
 ]
 
 export const questions = data.map(d => {
