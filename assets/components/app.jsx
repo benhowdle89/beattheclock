@@ -32,6 +32,7 @@ class App extends Component {
         return this.setState({
             started: true
         }, () => {
+            this.selectQuestion((this.state.questions[0]).id)
             remainingTimer = setInterval(() => {
                 let remaining = this.state.remaining - 1000
                 if(remaining == 0){

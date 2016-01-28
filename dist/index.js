@@ -77,6 +77,7 @@ var App = function (_Component) {
             return _this.setState({
                 started: true
             }, function () {
+                _this.selectQuestion(_this.state.questions[0].id);
                 remainingTimer = setInterval(function () {
                     var remaining = _this.state.remaining - 1000;
                     if (remaining == 0) {
